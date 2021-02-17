@@ -1,3 +1,6 @@
 .vscode
 *.b#*
 *.s#*
+build/
+devel/
+.catkin_workspace

@@ -6,18 +6,12 @@
 #define LEFT 0
 #define RIGHT 1
 
-#define MOTOR_LEFT_DIR_PIN PB1
-#define MOTOR_LEFT_PWM_PIN PB0
 #define ENC_LEFT_A_PIN PA9
 #define ENC_LEFT_B_PIN PA10
+#define ENC_RIGHT_A_PIN PA9
+#define ENC_RIGHT_B_PIN PA10
 
-#define MOTOR_RIGHT_DIR_PIN PA7
-#define MOTOR_RIGHT_PWM_PIN PA6
-#define ENC_RIGHT_A_PIN PA8
-#define ENC_RIGHT_B_PIN PB15
-
-long enc_counter[MOTOR_COUNT];
-unsigned long simple_enc_counter[MOTOR_COUNT];
+long enc_counter[MOTOR_COUNT] = {0,0};
 bool sign[MOTOR_COUNT][ENCODER_COUNT];
 
 void setup() {
@@ -25,21 +19,16 @@ void setup() {
   
   pinMode(ENC_LEFT_A_PIN, INPUT);
   pinMode(ENC_LEFT_B_PIN, INPUT);
-  pinMode(MOTOR_LEFT_DIR_PIN, OUTPUT);
-  pinMode(MOTOR_LEFT_PWM_PIN, OUTPUT);
-
   pinMode(ENC_RIGHT_A_PIN, INPUT);
   pinMode(ENC_RIGHT_B_PIN, INPUT);
-  pinMode(MOTOR_RIGHT_DIR_PIN, OUTPUT);
-  pinMode(MOTOR_RIGHT_PWM_PIN, OUTPUT);
 
   sign[LEFT][ENC_A] = digitalRead(ENC_LEFT_A_PIN);
   sign[LEFT][ENC_B] = digitalRead(ENC_LEFT_B_PIN);
   sign[RIGHT][ENC_A] = digitalRead(ENC_RIGHT_A_PIN);
   sign[RIGHT][ENC_B] = digitalRead(ENC_RIGHT_B_PIN);
 
-  attachInterrupt(ENC_LEFT_A_PIN,  left_enc_A,  CHANGE);
-  attachInterrupt(ENC_LEFT_B_PIN,  left_enc_B,  CHANGE);
+  attachInterrupt(ENC_LEFT_A_PIN, left_enc_A, CHANGE);
+  attachInterrupt(ENC_LEFT_B_PIN, left_enc_B, CHANGE);
   attachInterrupt(ENC_RIGHT_A_PIN, right_enc_A, CHANGE);
   attachInterrupt(ENC_RIGHT_B_PIN, right_enc_B, CHANGE);
 }
@@ -55,7 +44,6 @@ void left_enc_A()
   {
     enc_counter[LEFT]--;
   }
-  simple_enc_counter[LEFT]++;
 }
 
 void left_enc_B()
@@ -82,7 +70,6 @@ void right_enc_A()
   {
     enc_counter[RIGHT]--;
   }
-  simple_enc_counter[RIGHT]++;
 }
 
 void right_enc_B()
@@ -100,5 +87,5 @@ void right_enc_B()
 
 void loop() 
 {
-
+  Serial.println(enc_counter[RIGHT]);
 }
